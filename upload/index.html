@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>upload</title>
+</head>
+
+<body>
+    <input type="file" />
+    <script>
+        window.onload = function() {
+            let files = document.getElementsByTagName('input'),
+                len = files.length;
+            for (let i = 0; i < len; i++) {
+                let file = files[i]
+                if (file.type !== 'file') continue; // 不是文件类型的控件跳过
+                file.onchange = function() {
+                    let _files = this.files;
+                    console.log(_files)
+                    if (!_files.length) return;
+                    if (_files.length === 1) { // 选择单个文件
+                        let xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'http://localhost:3000/upload')
+                        let filePath = files[i].value;
+                        xhr.setRequestHeader('file-name', filePath.substring(filePath.lastIndexOf('\\') + 1))
+                        xhr.send(_files[0])
+                    } else {}
+                }
+            }
+        }
+    </script>
+</body>
+
+
+</html>
